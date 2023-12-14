@@ -16,12 +16,25 @@ class ProdiController extends Controller
 
     public function store(request $request){
         $validate = $request->validate([
-            'name' => 'required|unique:prodi',
+            'nama' => 'required|unique:prodis',
             'fakultas_id' =>'required'
         ]);
         prodi::create($validate);
         $response['success'] = true;
         $response['message'] = 'prodi berhasil disimpan.';
         return response()->json($response, 200);
+    }
+
+    public function destroy($id){
+        $prodi = prodi::where('id', $id)->delete();
+        if($prodi){
+            $response['success'] = true;
+            $response['message'] = 'prodi berhasil dihapuz.';
+            return response()->json($response, 200);
+        }else{
+            $response['success'] = false;
+            $response['message'] = 'prodi gagal dihapuz';
+            return response()->json($response, 200);
+        }
     }
 }
