@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\FakultasController;
 use App\Http\Controllers\API\MahasiswaController;
 use App\Http\Controllers\API\ProdiController;
 use App\Models\mahasiswa;
+use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,7 +24,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('fakultas',[FakultasController::class,'index']);
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->get('fakultas', [FakultasController::class, 'index']);
+//Route::get('fakultas',[FakultasController::class,'index']);
 Route::get('prodi',[ProdiController::class, 'index']);
 Route::get('mahasiswa',[MahasiswaController::class, 'index']);
 
